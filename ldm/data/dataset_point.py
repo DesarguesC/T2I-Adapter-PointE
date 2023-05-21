@@ -9,7 +9,7 @@ class PointDataset():
     def __init__(self, base_path: str, base_num: int, save_path=None):
         # base_path: coco_path -> 'COCO'
         base_path = base_path if base_path.endswith('/') else base_path + '/'
-        save_path = ('' if save_path == None else base_path) + 'total_data/'
+        save_path = '' if save_path == None else (base_path + 'total_data/')
 
         if os.path.exists(save_path):
             for file in os.listdir(save_path):
@@ -44,9 +44,9 @@ class PointDataset():
         prompt = self.prompts[idx]
 
         return {
+            'prompt': prompt,
             'ori_img': ori_img,
-            'poi_img': point_img,
-            'prompt': prompt
+            'poi_img': point_img
         }
 
     def __len__(self):
