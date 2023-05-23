@@ -2,7 +2,7 @@ import json
 import cv2
 import os
 from basicsr.utils import img2tensor
-from utils import move
+from ldm.data.utils import move
 import cv2
 
 class PointDataset():
@@ -33,6 +33,8 @@ class PointDataset():
         self.ori_imgs = ori_list
         self.point_imgs = point_list
         self.prompts = prompts
+        H, W, _ = cv2.imread(self.ori_imgs[idx]).shape
+        self.item_shape = (H, W)
 
     def __getitem__(self, idx):
         ori_img = cv2.imread(self.ori_imgs[idx])

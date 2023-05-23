@@ -182,6 +182,7 @@ def main():
     # dataset
     print(type(opt.gpus), opt.gpus)
     train_dataset = PointDataset(opt.data_path, len(opt.gpus))
+    optH, opt.W = train_sampler.item_shape
     train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
