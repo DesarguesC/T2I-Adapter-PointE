@@ -11,13 +11,22 @@ examples/*/*
 version.py
 
 # ignored files with suffix
-# *.html
-# *.png
-# *.jpeg
-# *.jpg
-# *.gif
-# *.pth
-# *.zip
+*.html
+*.png
+*.jpeg
+*.jpg
+*.gif
+*.pth
+*.zip
+
+
+*.ckpt
+*.pth
+*.pt
+*.bin
+*.safetensors
+
+
 
 # template
 
