@@ -3,6 +3,7 @@ tmp/*
 
 # ignore images in examples folder
 examples/*/*
+experiments/*
 
 *.DS_Store
 .idea
