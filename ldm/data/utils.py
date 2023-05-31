@@ -7,6 +7,7 @@ from torchvision.transforms.functional import to_tensor
 from transformers import CLIPProcessor
 from basicsr.utils import img2tensor
 import os, shutil
+from ldm.util import resize_numpy_image as rs 
 
 
 class PILtoTensor(object):
@@ -97,9 +98,9 @@ def get_bit(num: int) -> int:
 def get_name(cnt_base: int) -> str:
     cc = 10
     cn = get_bit(cnt_base)
-    return '0' * (cc - cn) + str(cnt_base) + '.png'
+    return '0' * (cc - cn) + str(cnt_base)
 
-def move(coco_path: str, target_path: str, base_num: int):
+def move(coco_path: str, target_path: str, base_num: int, resize=False, max_resolution=512*512):
     # TODO: MOVE every images into training base path
 
     # base_num: responds to gpu (total gpu ammount)
@@ -154,9 +155,21 @@ def move(coco_path: str, target_path: str, base_num: int):
 
             name = get_name(tot_cnt)
 
-            shutil.copyfile(ori_image, ori_img_path + name + '.jpg')
-            shutil.copyfile(poi_image, point_img_path + name + '.jpg')
-
+            # shutil.copyfile(ori_image, ori_img_path + name + '.jpg')
+            # shutil.copyfile(poi_image, point_img_path + name + '.jpg')
+            
+            if resize:
+                try:
+                    original = cv2.imread(ori_img_path + name + '.jpg')
+                    point = cv2.imread(point_img_path + name + '.jpg')
+                    original = rs(original, max_resolution=max_resolution)
+                    point = rs(point, max_resolution=max_resolution)
+                    cv2.imwrite(ori_img_path + name + '.jpg', original)
+                    cv2.imwrite(point_img_path + name + '.jpg', point)
+                except:
+                    print(ori_img_path + name + '.jpg', point_img_path + name + '.jpg')
+                    
+                    
             prompt_file.write(prompt)
             if not prompt.endswith('\n'):
                 prompt_file.write('\n')

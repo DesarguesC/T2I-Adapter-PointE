@@ -1,4 +1,4 @@
-# GENERATE TIME: Wed May 31 12:21:30 2023
+# GENERATE TIME: Wed May 31 22:41:26 2023
 # CMD:
 # train_point.py --local_rank=0 --ckpt /root/autodl-tmp/models/v1-5-pruned.ckpt --data_path /root/autodl-tmp/COCO/
 

@@ -781,6 +781,7 @@ class UNetModel(nn.Module):
         for id, module in enumerate(self.input_blocks):
             h = module(h, emb, context)
             if ((id+1)%3 == 0) and features_adapter is not None:
+                print(f'h.shape = {h.shape}, feature.shape={features_adapter[adapter_idx].shape}')
                 h = h + features_adapter[adapter_idx]
                 adapter_idx += 1
             hs.append(h)

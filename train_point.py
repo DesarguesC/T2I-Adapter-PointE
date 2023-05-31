@@ -49,6 +49,18 @@ def load_resume_state(opt):
         resume_state = torch.load(resume_state_path, map_location=lambda storage, loc: storage.cuda(device_id))
     return resume_state
 
+def str2int(x: str) -> int:
+    if '*' not in x:
+        try:
+            x = (int)(x)
+            return x
+        except:
+            raise RuntimeError('Invalid Integer')
+    elif '*' in x:
+        xx = x.split('*')
+        return (int)(xx[0]) * (int)(xx[1])
+        
+
 
 def parsr_args():
     parser = argparse.ArgumentParser()
@@ -165,6 +177,13 @@ def parsr_args():
         type=str,
         help='node rank for distributed training'
     )
+    parser.add_argument(
+        '--max_resolution',
+        type=str2int,
+        default=512*512,
+        help='resolution'
+    )
+    
     opt = parser.parse_args()
     return opt
 
@@ -182,7 +201,7 @@ def main():
     # dataset
     # print(type(opt.gpus), opt.gpus)
     
-    train_dataset = PointDataset(opt.data_path, len(opt.gpus))
+    train_dataset = PointDataset(opt.data_path, len(opt.gpus), max_resolution=opt.max_resolution)
     optH, opt.W = train_dataset.item_shape
     train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
     train_dataloader = torch.utils.data.DataLoader(
