@@ -6,6 +6,7 @@ export RANK=0
 export WORLD_SIZE=2     # the number of the thread to be called
 export MASTER_ADDR=localhost
 export MASTER_PORT=5678
+export CUDA_VISIBLE_DEVICES=<your gpu num>
 ```
 
 
