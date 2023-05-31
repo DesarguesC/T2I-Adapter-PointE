@@ -109,6 +109,9 @@ def move(coco_path: str, target_path: str, base_num: int):
 
     coco_path = coco_path if coco_path.endswith('/') else coco_path + '/'
     target_path = target_path if target_path.endswith('/') else target_path + '/'
+    
+    # print('coco_path: ', coco_path)
+    # print('target_path', target_path)
 
 
     # TODO: create save direction
@@ -137,10 +140,11 @@ def move(coco_path: str, target_path: str, base_num: int):
 
         ori_list = os.listdir(ori)
         poi_list = os.listdir(poi)
+        
         with open(pro + 'prompts.txt', 'r') as f:
             prompts = f.readlines()
-
-        assert len(ori_list) == len(poi_list), 'data length unequal Error'
+        
+        assert len(ori_list) == len(poi_list), f'data length unequal Erro, ori_list: {len(ori_list)}, poi_list: {len(poi_list)} at {i}'
         assert len(ori_list) == len(prompts), 'data length unequal Error'
 
         for k in range(len(ori_list)):

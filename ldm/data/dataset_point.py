@@ -9,12 +9,18 @@ class PointDataset():
     def __init__(self, base_path: str, base_num: int, save_path=None):
         # base_path: coco_path -> 'COCO'
         base_path = base_path if base_path.endswith('/') else base_path + '/'
-        save_path = '' if save_path == None else (base_path + 'total_data/')
+        if save_path is not None:
+            save_path = save_path if save_path.endswith('/') else save_path + '/'
+        save_path = base_path  + 'total_data/' if save_path == None else save_path
+
+        # print(save_path, os.listdir(save_path))
 
         if os.path.exists(save_path):
             for file in os.listdir(save_path):
                 file_path = os.path.join(save_path, file)
                 os.remove(file_path)
+        # os.remove(save_path)
+
         if not os.path.exists(save_path):
             os.mkdir(save_path)
 
@@ -24,7 +30,7 @@ class PointDataset():
         point_img = save_path + 'point_img/'
 
         prompt = save_path + 'prompts/prompts.txt'
-        prompts = open(prompt, 'a').readlines()
+        prompts = open(prompt, 'r').readlines()
 
         ori_list, point_list = os.listdir(ori_img), os.listdir(point_img)
         assert len(ori_list) == len(point_list), 'length unequal error-1'
@@ -33,7 +39,9 @@ class PointDataset():
         self.ori_imgs = ori_list
         self.point_imgs = point_list
         self.prompts = prompts
-        H, W, _ = cv2.imread(self.ori_imgs[idx]).shape
+        
+        print(self.ori_imgs[0])
+        H, W, _ = cv2.imread(ori_img + self.ori_imgs[0]).shape
         self.item_shape = (H, W)
 
     def __getitem__(self, idx):

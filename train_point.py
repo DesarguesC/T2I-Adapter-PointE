@@ -180,9 +180,10 @@ def main():
     torch.cuda.set_device(opt.local_rank)
 
     # dataset
-    print(type(opt.gpus), opt.gpus)
+    # print(type(opt.gpus), opt.gpus)
+    
     train_dataset = PointDataset(opt.data_path, len(opt.gpus))
-    optH, opt.W = train_sampler.item_shape
+    optH, opt.W = train_dataset.item_shape
     train_sampler = torch.utils.data.distributed.DistributedSampler(train_dataset)
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset,
@@ -190,7 +191,8 @@ def main():
         shuffle=(train_sampler is None),
         num_workers=opt.num_workers,
         pin_memory=True,
-        sampler=train_sampler)
+        sampler=train_sampler,
+        drop_last=True)
 
     # stable diffusion
     model = load_model_from_config(config, f"{opt.ckpt}").to(device)
