@@ -235,6 +235,7 @@ def main():
     optimizer = torch.optim.AdamW(params, lr=config['training']['lr'])
 
     experiments_root = osp.join('experiments', opt.name)
+    experiments_root = '../autodl-tmp/train-models/'
 
     # resume state
     resume_state = load_resume_state(opt)
