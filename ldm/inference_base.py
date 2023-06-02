@@ -249,6 +249,7 @@ def get_adapters(opt, cond_type: ExtraCondition):
             ksize=1,
             sk=True,
             use_conv=False).to(opt.device)
+    # point-e model: the same with depth model
     ckpt_path = getattr(opt, f'{cond_type.name}_adapter_ckpt', None)
     if ckpt_path is None:
         ckpt_path = getattr(opt, 'adapter_ckpt')
