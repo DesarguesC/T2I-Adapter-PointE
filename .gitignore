@@ -4,6 +4,7 @@ tmp/*
 # ignore images in examples folder
 examples/*/*
 experiments/*
+point_e_model_cache
 
 *.DS_Store
 .idea
