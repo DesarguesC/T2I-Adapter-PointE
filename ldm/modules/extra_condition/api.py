@@ -201,8 +201,7 @@ def get_cond_pointE(opt, cond_image, cond_inp_type='pointE', cond_model=None):
     if isinstance(cond_image, str):
         pointE = cv2.imread(cond_image)
     if cond_inp_type == 'pointE':
-        pointE = img2tensor(pointE).unsqueeze(0) / 255.
-        pointE = pointE.to(opt.device)
+        print(pointE.shape)        
     elif cond_inp_type == 'image':
         pointE = Image.open(cond_image)
         sampler = get_point_sampler(opt)
@@ -211,13 +210,17 @@ def get_cond_pointE(opt, cond_image, cond_inp_type='pointE', cond_model=None):
             samples = x
         pc = sampler.output_to_point_clouds(samples)[0]
         fig = plot_point_cloud(pc, grid_size=1, fixed_bounds=((-0.75, -0.75, -0.75), (0.75, 0.75, 0.75)))
-
-
-        pointE = cv2.cvtColor(np.array(pointE), cv2.COLOR_RGB2BGR)
-
+        pointE = cv2.cvtColor(np.array(fig), cv2.COLOR_RGB2BGR)
     else:
         raise NotImplementedError
-
+    if not hasattr(opt, 'resize_short_edge'):
+        setattr(opt, 'resize_short_edge', None)
+    
+    pointE = resize_numpy_image(pointE, max_resolution=opt.max_resolution, resize_short_edge=opt.resize_short_edge, opt=None if opt.fac==1 else opt)
+    
+    pointE = img2tensor(pointE).unsqueeze(0) / 255.
+    opt.H, opt.W = pointE.shape[2:]
+    pointE = pointE.to(opt.device)    
     return pointE
 
 

@@ -23,10 +23,18 @@ def main():
         choices=supported_cond,
         help='which condition modality you want to test',
     )
+    parser.add_argument(
+        '--fac',
+        type=int,
+        default=1,
+        help='extand imput image size',
+    )
+    
+    
     opt = parser.parse_args()
     which_cond = opt.which_cond
     if opt.outdir is None:
-        opt.outdir = f'outputs/test-{which_cond}'
+        opt.outdir = f'outputs/test-{which_cond}/' + opt.adapter_ckpt.split('/')[-1].strip('.pth')
     os.makedirs(opt.outdir, exist_ok=True)
     if opt.resize_short_edge is None:
         print(f"you don't specify the resize_shot_edge, so the maximum resolution is set to {opt.max_resolution}")

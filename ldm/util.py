@@ -171,7 +171,7 @@ def load_model_from_config(config, ckpt, vae_ckpt=None, verbose=False):
     return model
 
 
-def resize_numpy_image(image, max_resolution=512 * 512, resize_short_edge=None):
+def resize_numpy_image(image, max_resolution=512 * 512, resize_short_edge=None, opt=None):
     h, w = image.shape[:2]
     if resize_short_edge is not None:
         k = resize_short_edge / min(h, w)
@@ -180,6 +180,14 @@ def resize_numpy_image(image, max_resolution=512 * 512, resize_short_edge=None):
         k = k**0.5
     h = int(np.round(h * k / 64)) * 64
     w = int(np.round(w * k / 64)) * 64
+    
+    if opt is not None:
+        try:
+            h *= opt.fac
+            w *= opt.fac
+        except:
+            raise NotImplementedError
+    
     image = cv2.resize(image, (w, h), interpolation=cv2.INTER_LANCZOS4)
     return image
 

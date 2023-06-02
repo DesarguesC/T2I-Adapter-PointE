@@ -279,7 +279,6 @@ def diffusion_inference(opt, model, sampler, adapter_features, append_to_context
         opt.H = 512
         opt.W = 512
     shape = [opt.C, opt.H // opt.f, opt.W // opt.f]
-
     samples_latents, _ = sampler.sample(
         S=opt.steps,
         conditioning=c,
