@@ -5,6 +5,7 @@ tmp/*
 examples/*/*
 experiments/*
 point_e_model_cache
+outputs
 
 *.DS_Store
 .idea
